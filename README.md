@@ -11,7 +11,7 @@ This repository is designed as an open-access resource for climate researchers, 
 
 ---
 
-## 📍 Stations & Geographic Coverage
+## Stations & Geographic Coverage
 
 The Maldives stretches ~860 km north-to-south across the equator. The 5 synoptic stations provide full-length geographical coverage of the archipelago:
 
@@ -27,7 +27,7 @@ The Maldives stretches ~860 km north-to-south across the equator. The 5 synoptic
 
 ---
 
-## 📁 Repository Structure
+## Repository Structure
 
 ```text
 maldives-met-weather-dataset/
@@ -54,9 +54,9 @@ maldives-met-weather-dataset/
 
 ---
 
-## 📊 Data Dictionary & Schema
+## Data Dictionary & Schema
 
-> 💡 **Detailed Transformation Report:** For complete before-and-after audit statistics, concrete row examples, and why each transformation was performed, refer to the [Data Cleaning Report](data/cleaned/DATA_CLEANING_REPORT.md).
+> **Detailed Transformation Report:** For complete before-and-after audit statistics, concrete row examples, and why each transformation was performed, refer to the [Data Cleaning Report](data/cleaned/DATA_CLEANING_REPORT.md).
 
 ### Cleaned Datasets (`data/cleaned/`)
 The files in `data/cleaned/` are 100% machine-readable without needing `skiprows` or complex parsing:
@@ -85,7 +85,7 @@ The original raw files from Maldives Meteorological Service contain 4 metadata c
 
 ---
 
-## 🚀 Quick Start / How to Use
+## Quick Start / How to Use
 
 ### Read Clean Data Directly (Python / Pandas)
 No custom parsing needed! Standard one-liner:
@@ -126,7 +126,7 @@ glimpse(df_national)
 
 ---
 
-## 🌊 Meteorological & Climate Context of the Maldives
+## Meteorological & Climate Context of the Maldives
 
 The Maldives features a tropical monsoon climate characterized by two distinct seasons and two transitional periods:
 
@@ -139,7 +139,7 @@ The Maldives features a tropical monsoon climate characterized by two distinct s
 
 ---
 
-## 🏛️ Data Source & Acquisition
+## Data Source & Acquisition
 
 Official meteorological measurements and data are maintained by:
 - **Authority**: [Maldives Meteorological Service (MMS)](https://www.meteorology.gov.mv/)
@@ -150,7 +150,7 @@ MMS provides climate data as a public service for scientific, educational, and d
 
 ---
 
-## 📖 Citation
+## Citation
 
 If you use this dataset in your research, academic paper, blog post, or project, please cite:
 
@@ -167,7 +167,7 @@ If you use this dataset in your research, academic paper, blog post, or project,
 
 ---
 
-## ⚖️ License & Disclaimer
+## License & Disclaimer
 
 - **Raw Data Attribution**: The meteorological observation data originates from the [Maldives Meteorological Service (MMS)](https://www.meteorology.gov.mv/).
 - **Repository Content**: Documentation, loader scripts, and organized repository structure are shared under the [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/) License.

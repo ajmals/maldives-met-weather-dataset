@@ -163,14 +163,14 @@ def main():
     unified_records = []
     total_processed = 0
 
-    print("🚀 Cleaning Maldives Meteorological Service raw datasets...")
+    print("Cleaning Maldives Meteorological Service raw datasets...")
 
     for key, meta in STATIONS.items():
         raw_path = os.path.join(RAW_DIR, meta['filename'])
         out_path = os.path.join(CLEANED_DIR, meta['out_filename'])
 
         if not os.path.exists(raw_path):
-            print(f"⚠️ Warning: Missing {raw_path}")
+            print(f"Warning: Missing {raw_path}")
             continue
 
         with open(raw_path, 'r', encoding='utf-8', errors='ignore') as fp:
@@ -224,7 +224,7 @@ def main():
         total_processed += count
         date_start = station_records[0][0]
         date_end = station_records[-1][0]
-        print(f"  ✓ {meta['name']:<14} ({meta['atoll_prefix']:<4}) -> {meta['out_filename']:<16} [{count:,} rows | {date_start} to {date_end}]")
+        print(f"  * {meta['name']:<14} ({meta['atoll_prefix']:<4}) -> {meta['out_filename']:<16} [{count:,} rows | {date_start} to {date_end}]")
 
     # Sort unified records chronologically, then by station_id
     unified_records.sort(key=lambda r: (r[0], r[1]))
@@ -235,8 +235,8 @@ def main():
         writer.writerow(UNIFIED_COLUMNS)
         writer.writerows(unified_records)
 
-    print(f"\n✨ Successfully generated unified dataset: {os.path.basename(unified_path)}")
-    print(f"📊 Total processed records across all stations: {len(unified_records):,}")
+    print(f"\nSuccessfully generated unified dataset: {os.path.basename(unified_path)}")
+    print(f"Total processed records across all stations: {len(unified_records):,}")
 
 
 if __name__ == '__main__':
