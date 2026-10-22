@@ -59,10 +59,39 @@ maldives-met-weather-dataset/
 
 ---
 
-## Data Analysis & Transformation Reports
+## Data Cleaning Summary
 
-- **Exploratory Data Analysis Report:** For complete statistical distributions, monsoonal cycles, multi-decadal warming trends (+0.27 deg C/decade at Hulhulé), spatial drying gradients, and historical record deluges, see the [Exploratory Data Analysis Report](reports/EXPLORATORY_DATA_ANALYSIS.md).
-- **Data Cleaning Report:** For before-and-after audit statistics, concrete row examples, and sanitization rules, see the [Data Cleaning Report](data/cleaned/DATA_CLEANING_REPORT.md).
+The raw meteorological exports from the Maldives Meteorological Service (MMS) contained comment headers, non-standard date formats (`DD-MM-YYYY`), mixed string codes (`"TR"` for trace rainfall, `"-"`/`"N"` for missing records), and lacked station-level geospatial metadata. These formatting inconsistencies caused automated ingestion workflows in Pandas, Polars, DuckDB, and BigQuery to fail.
+
+Key transformations executed by `scripts/clean_data.py`:
+- **Header Sanitization:** Stripped metadata comment lines, ensuring tabular data begins cleanly with standardized column headers on line 1.
+- **Date Standardization:** Standardized all dates to ISO-8601 format (`YYYY-MM-DD`).
+- **Trace Rainfall Disambiguation:** Preserved trace rainfall events (<0.1 mm) by recording `rainfall_mm = 0.05` alongside an explicit boolean flag `is_trace_rain = true`. This prevents precipitation frequency distortion while keeping numeric accumulation math valid.
+- **Null Value Standardization:** Replaced custom missing indicators (`"-"`, `"N"`) with empty comma-delimited fields, automatically parsed as `NaN` / `NULL`.
+- **Geospatial Enrichment & Master Integration:** Integrated station coordinates, WMO IDs, atoll names, and regional classifications into individual station files and compiled a unified national master dataset (`maldives_national_weather_daily.csv`).
+- **Quality Assurance Audit:** Verified 100% calendar continuity (zero missing observation dates across 74,995 station-days), confirmed leap year entries, and validated physical boundary bounds.
+
+For complete before-and-after audit statistics, concrete row examples, and sanitization logic, see the full [Data Cleaning Report](data/cleaned/DATA_CLEANING_REPORT.md).
+
+---
+
+## Data Exploration Summary
+
+An exploratory data analysis was conducted across the entire 51-year cleaned corpus (1975–2026, 74,995 daily observations) across all 5 synoptic stations to evaluate statistical distributions, seasonal monsoonal dynamics, spatial gradients, multi-decadal climate trends, and historical weather extremes.
+
+Key findings from the exploratory analysis:
+- **Latitudinal Rainfall Gradient:** A south-to-north drying gradient spans the archipelago. Southern equatorial stations (Gan, Kaadedhdhoo, Kadhdhoo) receive **2,190 mm to 2,216 mm/year** with ~46% wet days, whereas northern atolls (Hanimaadhoo) receive **1,758 mm/year** with 40% wet days. Annual rainfall decreases northward by approximately **65 mm per degree of latitude**.
+- **Equatorial Thermal Stability:** Temperatures are closely moderated by the Indian Ocean. Grand mean maximum temperature is **31.10 deg C** (std: 1.07 deg C), grand mean minimum temperature is **25.40 deg C** (std: 1.60 deg C), and mean diurnal temperature range (DTR) is **5.70 deg C**.
+- **Statistically Significant Multi-Decadal Warming:** Long-term linear regression over the complete 51-year record at Hulhulé (1975–2025) reveals a warming trend of **+0.273 deg C per decade ($R^2 = 0.751, p = 2.07 \times 10^{-16}$)**, totaling **+1.37 deg C** of warming since 1975. In Gan, minimum nighttime temperatures have warmed at **+0.380 deg C per decade**, driving a statistically significant long-term contraction of the diurnal temperature range (**-0.263 deg C per decade**, $p < 0.001$).
+- **Monsoonal Climatology:** The wet Hulhangu (South-West) monsoon peaks in May (**255.4 mm** monthly average), while the dry Iruvai (North-East) monsoon reaches its driest point in February (**66.1 mm** monthly average). The hottest period occurs during the April inter-monsoon transition (mean Tmax of **32.15 deg C**).
+- **Precipitation-Induced Cooling:** Daily maximum temperature and rainfall exhibit a negative correlation ($r = -0.34$). Heavy rain events (>50 mm) suppress daytime maximum temperatures by **2.8 deg C to 3.5 deg C** below dry-day baselines.
+- **Historical Extremes:** All-time national 24-hour rainfall record is **228.4 mm** (Gan, 24 Nov 2015); all-time high temperature record is **36.0 deg C** (Kadhdhoo, 12 Sep 1991); all-time low temperature record is **18.2 deg C** (Hanimaadhoo, 23 Dec 2002).
+
+For complete parametric and non-parametric distributions, seasonal normals, regression tables, and 8 publication-quality diagnostic charts, see the full [Exploratory Data Analysis Report](reports/EXPLORATORY_DATA_ANALYSIS.md).
+
+---
+
+## Data Dictionary & Schema
 
 ### Cleaned Datasets (`data/cleaned/`)
 The files in `data/cleaned/` are 100% machine-readable without needing `skiprows` or complex parsing:
@@ -108,11 +137,15 @@ df_national = pd.read_csv('data/cleaned/maldives_national_weather_daily.csv', pa
 print(df_national.info())
 ```
 
-### Reproduce Cleaning Pipeline
-You can re-run the end-to-end cleaning pipeline anytime using the included zero-dependency Python script:
+### Reproduce Cleaning & Analysis Pipelines
+You can re-run the cleaning pipeline and the exploratory analysis pipeline anytime:
 
 ```bash
+# 1. Clean raw MMS CSV files into data/cleaned/
 python3 scripts/clean_data.py
+
+# 2. Run exploratory data analysis and generate reports & figures
+python3 scripts/eda_analysis.py
 ```
 
 ### R Example (Reading Cleaned Data)
