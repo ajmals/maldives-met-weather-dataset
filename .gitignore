@@ -31,3 +31,10 @@ share/python-wheels/
 *.egg-info/
 .installed.cfg
 *.egg
+
+# Agent and AI assistant configurations
+.agent
+.agent/
+.agents
+.agents/
+AGENTS.md
