@@ -33,8 +33,13 @@ The Maldives stretches ~860 km north-to-south across the equator. The 5 synoptic
 maldives-met-weather-dataset/
 ├── .gitignore
 ├── README.md
+├── requirements.txt
 ├── scripts/
-│   └── clean_data.py               # Reproducible cleaning pipeline (raw -> cleaned)
+│   ├── clean_data.py               # Reproducible cleaning pipeline (raw -> cleaned)
+│   └── eda_analysis.py             # Comprehensive EDA script & figure generator
+├── reports/
+│   ├── EXPLORATORY_DATA_ANALYSIS.md # 51-year comprehensive Exploratory Data Analysis report
+│   └── figures/                    # High-resolution diagnostic figures and charts
 └── data/
     ├── cleaned/                    # Machine-readable, standardized (UTF-8, ISO dates, no headers)
     │   ├── DATA_CLEANING_REPORT.md # Comprehensive audit & cleaning report (before vs. after metrics)
@@ -54,9 +59,10 @@ maldives-met-weather-dataset/
 
 ---
 
-## Data Dictionary & Schema
+## Data Analysis & Transformation Reports
 
-> **Detailed Transformation Report:** For complete before-and-after audit statistics, concrete row examples, and why each transformation was performed, refer to the [Data Cleaning Report](data/cleaned/DATA_CLEANING_REPORT.md).
+- **Exploratory Data Analysis Report:** For complete statistical distributions, monsoonal cycles, multi-decadal warming trends (+0.27 deg C/decade at Hulhulé), spatial drying gradients, and historical record deluges, see the [Exploratory Data Analysis Report](reports/EXPLORATORY_DATA_ANALYSIS.md).
+- **Data Cleaning Report:** For before-and-after audit statistics, concrete row examples, and sanitization rules, see the [Data Cleaning Report](data/cleaned/DATA_CLEANING_REPORT.md).
 
 ### Cleaned Datasets (`data/cleaned/`)
 The files in `data/cleaned/` are 100% machine-readable without needing `skiprows` or complex parsing:
