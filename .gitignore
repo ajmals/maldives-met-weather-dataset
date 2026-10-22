@@ -38,3 +38,7 @@ share/python-wheels/
 .agents
 .agents/
 AGENTS.md
+
+# IDE & Workspace
+*.code-workspace
+.vscode/
